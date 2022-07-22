@@ -5,6 +5,25 @@ function Ticker() {
   const [price, setPrice] = useState(0);
   const [color, setColor] = useState("black");
 
+
+  const prevPriceRef = useRef(price);
+
+  useEffect(() => {
+    // use the current value of the ref
+    const prevPrice = prevPriceRef.current;
+    if (price > prevPrice) {
+      setColor("green");
+    } else if (price < prevPrice) {
+      setColor("red");
+    } else {
+      setColor("black");
+    }
+    // set the new value of the ref (note: this doesn't trigger a re-render)
+    prevPriceRef.current = price;
+  }, [price]);
+
+  
+
   useEffect(() => {
     const id = setInterval(() => setPrice(makeRandomNumber), 1000);
     return function () {
